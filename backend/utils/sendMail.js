@@ -2,16 +2,18 @@ import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
+console.log("EMAIL_USER:", process.env.EMAIL_USER);
+console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
+
 const transport = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
-  secure: false, // STARTTLS (recommended for Gmail)
+  secure: false,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
 });
-
 
 export const sendPaymentMail = async (
   to,
@@ -24,7 +26,7 @@ export const sendPaymentMail = async (
     const statusText = isPaid ? "✅ Payment Successful" : "❌ Payment Failed";
 
     await transport.sendMail({
-      from: `"${appName}" <${process.env.EMAIL}>`,
+      from: `"${appName}" <${process.env.EMAIL_USER}>`, // ✅ fixed: was EMAIL
       to,
       subject: `${appName} : Payment Confirmation`,
       html: `
@@ -50,24 +52,27 @@ export const sendPaymentMail = async (
 
           <p>If you have any questions, feel free to reply to this email.</p>
           <p style="margin-top:20px;">Regards,<br><b>${appName} Team</b></p>
-          <button> <a href="http://localhost:5173/my-payments" style="margin-top:20px; padding:4px ; background-color:orange; text:white ;  " > See update on website </a> </button>
+          <a href="http://localhost:5173/my-payments" 
+            style="display:inline-block; margin-top:20px; padding:10px 20px; background-color:orange; color:white; text-decoration:none; border-radius:6px;">
+            See update on website
+          </a>
         </div>
       `,
     });
 
-
+    console.log("✅ Payment mail sent to", to);
   } catch (error) {
     console.error("❌ Error sending payment mail:", error);
   }
 };
 
-
 export const sendVerifyMailOtp = async (to, otp, appName = "Durbar Physics") => {
-  await transport.sendMail({
-    from: process.env.EMAIL,
-    to,
-    subject: `${appName} : Verify OTP for registration`,
-    html: `
+  try {
+   const info =  await transport.sendMail({
+      from: `"${appName}" <${process.env.EMAIL_USER}>`, // ✅ consistent format
+      to,
+      subject: `${appName} : Verify OTP for registration`,
+      html: `
         <div style="font-family: Arial, sans-serif; background-color: #fff8f0; padding: 40px;">
           <div style="max-width: 600px; margin: auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
             
@@ -87,12 +92,10 @@ export const sendVerifyMailOtp = async (to, otp, appName = "Durbar Physics") => 
               </div>
               
               <p style="font-size: 14px; color: #666;">This OTP is valid for the next 10 minutes. Do not share it with anyone.</p>
-              
               <p style="font-size: 16px;">If you did not request this OTP, please ignore this email.</p>
-              
               <p style="margin-top: 30px; font-size: 16px;">Cheers,<br/>The ${appName} Team</p>
             </div>
-  
+
             <!-- Footer -->
             <div style="background-color: #fff3e0; text-align: center; padding: 20px; font-size: 12px; color: #555;">
               &copy; ${new Date().getFullYear()} ${appName}. All rights reserved.
@@ -100,13 +103,33 @@ export const sendVerifyMailOtp = async (to, otp, appName = "Durbar Physics") => 
           </div>
         </div>
       `,
-  });
+    });
+    console.log(info)
+
+    console.log(info.messageId)
+    console.log(info.accepted)
+    console.log(info.rejected)
+
+
+
+
+    console.log("✅ OTP email sent successfully to", to);
+  } catch (error) {
+    console.error("❌ Error sending OTP mail:", error);
+  }
 };
 
-export const sendMeetLink = async (to, courseTitle, meetlink, courseName, day, appName = "Durbar Physics") => {
+export const sendMeetLink = async (
+  to,
+  courseTitle,
+  meetlink,
+  courseName,
+  day,
+  appName = "Durbar Physics"
+) => {
   try {
     await transport.sendMail({
-      from: process.env.EMAIL,
+      from: `"${appName}" <${process.env.EMAIL_USER}>`, // ✅ consistent format
       to,
       subject: `${appName} | Google Meet Link for ${courseName} - Day ${day}`,
       html: `
@@ -115,70 +138,74 @@ export const sendMeetLink = async (to, courseTitle, meetlink, courseName, day, a
             <div style="background-color:#ff7700; color:white; padding:20px; text-align:center;">
               <h1 style="margin:0; font-size:24px;">${appName}</h1>
             </div>
-  
+
             <div style="padding:20px; color:#333;">
               <h2 style="color:#ff7700; font-size:20px; margin-bottom:10px;">Hello, Student!</h2>
               <p style="font-size:16px; line-height:1.5;">
                 You have a scheduled session for the <strong>${courseName}</strong> course (Day ${day}) via Google Meet.
               </p>
-  
               <p style="font-size:16px; line-height:1.5;">
                 Course Topic: <strong>${courseTitle}</strong>
               </p>
-  
+
               <div style="text-align:center; margin:30px 0;">
                 <a href="${meetlink}" target="_blank" 
                   style="background-color:#ff7700; color:white; text-decoration:none; padding:12px 25px; border-radius:6px; font-weight:bold; font-size:16px; display:inline-block;">
                   Join Meet
                 </a>
               </div>
-  
+
               <p style="font-size:14px; color:#555; text-align:center; margin-top:20px;">
                 Note: Please join 5 minutes before the scheduled time and keep your microphone muted unless asked otherwise.
               </p>
-  
-              <p style="font-size:14px; color:#555; text-align:center;">
-                - ${appName} Team
-              </p>
+              <p style="font-size:14px; color:#555; text-align:center;">- ${appName} Team</p>
             </div>
-  
+
             <div style="background-color:#fff5e6; padding:15px; text-align:center; color:#ff7700; font-size:12px;">
               This is an automated email. Please do not reply.
             </div>
           </div>
         </div>
-        `
+      `,
     });
 
+    console.log("✅ Meet link sent to", to);
   } catch (error) {
-    console.log("Error sending meet link:", error);
+    console.error("❌ Error sending meet link:", error);
   }
 };
 
-export const sendVideoNotification = async (to, videoTitle, courseTitle, appName = "Durbar Physics") => {
+export const sendVideoNotification = async (
+  to,
+  videoTitle,
+  courseTitle,
+  appName = "Durbar Physics"
+) => {
   try {
     await transport.sendMail({
-      from: process.env.EMAIL,
+      from: `"${appName}" <${process.env.EMAIL_USER}>`, // ✅ fixed: was EMAIL
       to,
       subject: `${appName} - New Video Added: ${videoTitle}`,
       html: `
-      <div style="font-family: Arial, sans-serif; color: #333;">
-        <div style="background-color: #FF8C42; padding: 20px; border-radius: 10px; text-align: center;">
-          <h2 style="color: white; margin-bottom: 10px;">📹 New Video Alert!</h2>
-          <p style="color: white; font-size: 16px;">A new video titled <strong>${videoTitle}</strong> has been added to your course <strong>${courseTitle}</strong>.</p>
+        <div style="font-family: Arial, sans-serif; color: #333;">
+          <div style="background-color: #FF8C42; padding: 20px; border-radius: 10px; text-align: center;">
+            <h2 style="color: white; margin-bottom: 10px;">📹 New Video Alert!</h2>
+            <p style="color: white; font-size: 16px;">A new video titled <strong>${videoTitle}</strong> has been added to your course <strong>${courseTitle}</strong>.</p>
+          </div>
+          <div style="padding: 20px;">
+            <p>Hi there,</p>
+            <p>We have just uploaded a new video for your learning. Check your <strong>learning portal</strong> to watch it and continue your progress.</p>
+            <p style="margin-top: 20px;">
+              <a href="#" style="display: inline-block; background-color: #FF8C42; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px;">Go to Portal</a>
+            </p>
+            <p style="margin-top: 30px; font-size: 12px; color: #888;">This is an automated notification from ${appName}. Please do not reply to this email.</p>
+          </div>
         </div>
-        <div style="padding: 20px;">
-          <p>Hi there,</p>
-          <p>We have just uploaded a new video for your learning. Check your <strong>learning portal</strong> to watch it and continue your progress.</p>
-          <p style="margin-top: 20px;">
-            <a href="#" style="display: inline-block; background-color: #FF8C42; color: white; padding: 12px 20px; text-decoration: none; border-radius: 6px;">Go to Portal</a>
-          </p>
-          <p style="margin-top: 30px; font-size: 12px; color: #888;">This is an automated notification from ${appName}. Please do not reply to this email.</p>
-        </div>
-      </div>
-      `
+      `,
     });
+
+    console.log("✅ Video notification sent to", to);
   } catch (error) {
-    console.error("Error sending video notification:", error.message);
+    console.error("❌ Error sending video notification:", error.message);
   }
 };
