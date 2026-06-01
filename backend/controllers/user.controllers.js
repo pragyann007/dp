@@ -7,6 +7,7 @@ export const register = async (req,res) => {
 
    try {
      const { name, email, password, role , phone  } = req.body;
+     console.log("Received registration data:", req.body);
  
      if (!name || !email || !password || !phone) {
          return res.status(400).json({
@@ -17,7 +18,7 @@ export const register = async (req,res) => {
      const isUser = await User.findOne({ email })
  
      if (isUser) {
-         return res.status(400).json({ message: "User already exists .." })
+         return res.status(400).json({ message: "User already not .." })
  
      }
  
@@ -38,9 +39,9 @@ export const register = async (req,res) => {
  
      })
  
-     await newuser.save()
+     await newuser.save();
+     await sendVerifyMailOtp(email,otp);
  
-     sendVerifyMailOtp(email,otp);
 
      return res.status(201).json({
          message:"User created sucessfully !!",
