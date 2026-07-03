@@ -4,7 +4,7 @@ import { getAll, initiatePayment, myPayments, verifyAndUpdate } from "../control
 import { isAdminAuth } from "../middlewares/isadmin.js";
 
 const paymentRouter = express.Router();
-
+// a
 paymentRouter.post("/initiate-payment",isuserauth,initiatePayment)
 paymentRouter.patch("/verify-payment/:paymentId",isuserauth,verifyAndUpdate)
 paymentRouter.get("/all",isAdminAuth,getAll)

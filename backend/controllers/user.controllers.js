@@ -121,8 +121,8 @@ export const login = async (req,res)=>{
     const token = await  genToken(user._id,user.role);
   
     res.cookie("token",token,{
-      secure: false,
-      sameSite: "strict",
+      secure: true,
+      sameSite: "none",
       maxAge: 30 * 24 * 60 * 60 * 1000,
       httpOnly: true
     })
