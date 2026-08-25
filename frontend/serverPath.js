@@ -1,1 +1,4 @@
-export const serverPath = "http://localhost:5000"
+export const serverPath ="https://dp-ynw6.onrender.com"
+// "https://dp-0bqg.onrender.com"
+// 
+//

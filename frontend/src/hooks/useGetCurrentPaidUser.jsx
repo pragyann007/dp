@@ -26,7 +26,6 @@ const useGetCurrentPaidUser = () => {
         })
       );
     } catch (err) {
-      console.error("Error fetching paid user:", err);
     }
   };
   

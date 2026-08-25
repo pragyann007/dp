@@ -34,7 +34,6 @@ export default function OtpInput({email}) {
 
   const handleVerifyOtp = async () => {
     try {
-      console.log(email);
   
       // convert string otp -> number
       const numericOtp = Number(otp);
@@ -45,7 +44,6 @@ export default function OtpInput({email}) {
         { withCredentials: true }
       );
   
-      console.log("Success", res.data);
       if (res.status === 200) {
         setOtp(""); // reset input
         toast.success("Otp verified successfully .. ");
@@ -54,7 +52,6 @@ export default function OtpInput({email}) {
         }, 2000);
       }
     } catch (error) {
-      console.log("Error while verifying otp in frontend", error);
       setotpFail(true);
       toast.error("Invalid Otp ...", error.response?.data?.message);
     }
@@ -94,6 +91,9 @@ export default function OtpInput({email}) {
               onClick={handleVerifyOtp}
              
                 className='bg-primary cursor-pointer  flex justify-center gap-8 rounded-2xl text-[18px]  text-white px-4 py-3 w-full items-center '  >Verify OTP </button>
+          <p
+          className="text-black text-md mt-2  font-semibold "
+          >Please check spam folder if it is not seen in your primary mailbox.</p>
             </div>
     </div>
     <ToastContainer/>

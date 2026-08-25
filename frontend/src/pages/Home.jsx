@@ -108,7 +108,7 @@ const Home = () => {
         <div className="right img  w-full md:w-[45%] h-64 md:h-[700px] rounded-2xl mt-8 md:mt-0">
           {/* Replace with your hero image */}
           <img
-  className="w-full h-full object-cover object-center rounded-2xl shadow-lg border border-orange-200"
+  className="w-full min-h-[89%] object-cover object-center rounded-2xl shadow-lg border border-orange-200"
   src={hero}
   alt="Hero"
 />

@@ -58,7 +58,6 @@ const SendResources = () => {
       );
 
       toast.success("Resource sent to course successfully ✅");
-      console.log(res.data);
 
       // Reset form
       setTitle("");

@@ -26,6 +26,12 @@ const Courses = () => {
     <Layout>
       <div className="py-12 px-4 sm:px-6 lg:px-8">
         <PageHeader text="Our Courses" />
+        <div>
+        <h1 className="flex justify-center text-orange-600 mt-10  text-3xl font0bold " >{courses.length <=0 && <p>No courses are there currently</p>}</h1>
+
+
+        </div>
+       
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-8">
           {courses.map((course) => (
             <CourseCard key={course._id} course={course} />

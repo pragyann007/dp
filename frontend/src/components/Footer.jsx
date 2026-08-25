@@ -124,7 +124,7 @@ const Footer = () => {
       <div className="border-t border-orange-300 mt-10 pt-6 text-center text-md text-orange-100">
         © {new Date().getFullYear()} Durbar Physics. All Rights Reserved.
 
-        <h2 className="text-white-500 font-semibold mt-14 ">Made with <span className="font-bold " >LOVE</span> by <a target="_blank" className="underline" href="https://www.instagram.com/pragyann007" >PRAGYAN</a> </h2>
+        <h2 className="text-white-500 font-semibold mt-14 ">Made with <span className="font-bold " >LOVE</span> by <a target="_blank" className="underline" href="https://www.instagram.com/not_pragyann/" >PRAGYAN</a> </h2>
       </div>
     </footer>
   );

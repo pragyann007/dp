@@ -21,7 +21,6 @@ const Register = () => {
       const res = await axios.post(`${serverPath}/api/user/auth/register`, {
         name, email, password , phone
       }, { withCredentials: true });
-      console.log("sucess", res.data)
       toast.success("Otp Sent ..")
       setTimeout(() => {
         setshowOtp(prev=>!prev)
@@ -46,7 +45,6 @@ const Register = () => {
   const finalMessage = serverMessage || mongooseMessage || axiosMessage || "Something went wrong";
 
   toast.error(`Could not register: ${finalMessage}`);
-  console.log("Full error:", error);
 
     }
 

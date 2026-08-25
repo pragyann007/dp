@@ -28,7 +28,6 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
-      console.log("Form submitted:", formData);
   
       const {name,email,phone,grade,age,message} = formData ;
   
@@ -64,7 +63,6 @@ const Contact = () => {
         
             const finalMessage = serverMessage || mongooseMessage || axiosMessage || "Something went wrong";
             toast.error(`Could not login: ${finalMessage}`);
-            console.log("Full error:", error);
       
     }
   };
