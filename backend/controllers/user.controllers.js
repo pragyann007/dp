@@ -7,7 +7,6 @@ export const register = async (req,res) => {
 
    try {
      const { name, email, password, role , phone  } = req.body;
-     console.log("Received registration data:", req.body);
  
      if (!name || !email || !password || !phone) {
          return res.status(400).json({
@@ -49,7 +48,6 @@ export const register = async (req,res) => {
      })
    } catch (error) {
 
-    console.log("error in user controllers \n \n ",error)
 
     return res.status(400).json({
         error
@@ -131,7 +129,6 @@ export const login = async (req,res)=>{
     return res.status(200).json({message:"User logged in sucess ..." , user,token:token})
   } catch (error) {
 
-    console.log("Error in login " , error)
     return res.status(401).json({message:"Server error in login "})
     
   }
@@ -159,7 +156,6 @@ export const getCurrentUser = async (req,res)=>{
   } catch (error) {
 
     return res.status(400).json({message:"Error in getting current user .."})
-    console.log("eror in get current user " , error)
     
   }
 

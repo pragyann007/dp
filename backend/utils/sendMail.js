@@ -3,8 +3,7 @@ import { sendEmail } from "../utils/email.js";
 
 dotenv.config();
 
-console.log("EMAIL_USER:", process.env.EMAIL_USER);
-console.log("EMAIL_PASS:", process.env.EMAIL_PASS);
+
 
 
 
@@ -52,7 +51,6 @@ export const sendPaymentMail = async( to,
       });
       
     } catch (error) {
-      console.log("error sending payment mail", error);
       
     }
   }
@@ -98,9 +96,7 @@ export const sendVerifyMailOtp = async (
     `
     });
 
-    console.log(info);
 
-    console.log("✅ OTP email sent successfully to", to);
   } catch (error) {
     console.error("❌ Error sending OTP mail:", error);
   }
@@ -157,7 +153,6 @@ export const sendMeetLink = async (
     });
   
 
-    console.log("✅ Meet link sent to", to);
   } catch (error) {
     console.error("❌ Error sending meet link:", error);
   }
@@ -192,7 +187,6 @@ export const sendVideoNotification = async (
       </div>
     `,    });
 
-    console.log("✅ Video notification sent to", to);
   } catch (error) {
     console.error("❌ Error sending video notification:", error.message);
   }

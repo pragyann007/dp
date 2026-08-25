@@ -25,7 +25,6 @@ export const contactform = async(req,res)=>{
     
     
     } catch (error) {
-        console.log("Error in contact form controllers");
 
         return res.status(400).json({
             message:"Error in contact form ",
@@ -46,7 +45,6 @@ export const getForm = async (req,res)=>{
  
    } catch (error) {
 
-    console.log("Error while getting all form data",error)
     return res.status(400).json({message:"Error while getting all form data",error})
     
    }
